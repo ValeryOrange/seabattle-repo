@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d80a30d-2bb0-4f8b-a731-e7ffc34a2a0b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Game.java" afterPath="$PROJECT_DIR$/src/Game.java" />
-    </list>
+    <list default="true" id="9d80a30d-2bb0-4f8b-a731-e7ffc34a2a0b" name="Default" comment="" />
     <ignored path="Battleship.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
