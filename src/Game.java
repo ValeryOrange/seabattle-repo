@@ -16,7 +16,6 @@ public class Game {
     };
 
     public static void main(String[] args) {
-        System.out.println("try git");
         System.out.println("Game start\nEnter your name:");
         String yourName = yourPlayer.inputTheName();
         System.out.printf("Hello, %s!\n", yourName);
