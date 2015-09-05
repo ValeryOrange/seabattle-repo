@@ -1,0 +1,11 @@
+*.iml
+
+## Directory-based project format:
+.idea/
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+.DS_Store
