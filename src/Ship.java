@@ -12,14 +12,15 @@ public class Ship {
     int amount;
     int length;
     //установка первой ячейки в произвольную позицию.
-    // Пока без проверки на то, чтобы рядом не было других кораблей
+    // TODO сделать проверку на то, чтобы рядом не было других кораблей, вынести в отдельный метод
     int xFirstCell = randomCoordinate.nextInt(newField.FIELDWIDTH);
     int yFirstCell = randomCoordinate.nextInt(newField.FIELDHEIGHT);
     String[] orientations = new String[]{"horizontal", "vertical"};
     String shipOrientation = orientations[randomCoordinate.nextInt(orientations.length)];
     int[][] coordinates;
 
-    //определяем тип корабля
+    //определяем количество корабля. каждый новый корабль кладется в массив, соответствующий типу. по длине массива
+    //проверяется, можно ли еще создать корабль данного типа
     public int shipsAmount(int type){
         switch (type){
             case 1: amount = 4;
@@ -59,7 +60,7 @@ public class Ship {
     // Пока без проверки на то, чтобы рядом не было других кораблей и чтобы корабль не выходил за пределы поля.ра
     //TODO По моей текущей задумке корабли устанавливаются рандомно в любое место на двумерном поле горизонтально или вертикално.
     // TODO я еще не успела придумать, как осуществлять проверку того, чтобы при установке не было других кораблей рядом.
-    //TODO и еще не придумала, как отслеживать их количество при установке.
+    //TODO и еще не придумала, как отслеживать их количество при установке. - см. выше - массивы кораблей
     public int[][] getCoordinates(String shipOrientation, int type) {
         if (shipOrientation == "vertical") {
             for (int i = 0; i < 2; i++) {

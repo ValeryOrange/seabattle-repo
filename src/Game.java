@@ -8,9 +8,9 @@ public class Game {
     static char[] letters = {' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
     static int rowNumber;
     static Player yourPlayer = new Player();
-    // временный массив, в котором хранятся варианты того, выиграл игрок или нет
-    static Random randomMessage = new Random();
     static String messageAboutPlayer;
+    static Random randomMessage = new Random();
+    // временный массив, в котором хранятся варианты того, выиграл игрок или нет
     static String[] messages = new String[] {
             "The ship has been damaged! Shoot again.",
             "This ship has been sent to the bottom.", "You overmissed. Try again.", "Your shoot is out of range. Try again.",
