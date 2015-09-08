@@ -5,6 +5,8 @@ import java.util.Random;
  */
 public class Game {
     static Field yourField = new Field();
+    static char[] letters = {' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+    static int rowNumber;
     static Player yourPlayer = new Player();
     // временный массив, в котором хранятся варианты того, выиграл игрок или нет
     static Random randomMessage = new Random();
@@ -26,11 +28,16 @@ public class Game {
     }
 
     public static void showEmptyField() {
-//        yourField.cells[0] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
-        for (int i = 1; i < yourField.cells.length; i++) {
-            for (int j = 1; j < yourField.cells.length; j++) {
+        for (int k = 0; k < letters.length; k++){
+            System.out.print(letters[k] + "\t");
+        }
+        System.out.println();
+        for (int i = 0; i < yourField.cells.length; i++) {
+            rowNumber = i+1;
+            System.out.print(rowNumber + "\t");
+            for (int j = 0; j < yourField.cells.length; j++) {
                 yourField.cells[i][j] = '.';
-                System.out.print(yourField.cells[i][j]);
+                System.out.print(yourField.cells[i][j] + "\t");
             }
             System.out.println();
         }
