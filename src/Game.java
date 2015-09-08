@@ -36,7 +36,7 @@ public class Game {
             rowNumber = i+1;
             System.out.print(rowNumber + "\t");
             for (int j = 0; j < yourField.cells.length; j++) {
-                yourField.cells[i][j] = '.';
+                yourField.cells[i][j] = '\u25a2';
                 System.out.print(yourField.cells[i][j] + "\t");
             }
             System.out.println();
