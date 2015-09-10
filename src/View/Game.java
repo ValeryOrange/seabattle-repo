@@ -1,3 +1,8 @@
+package View;
+
+import Controller.Player;
+import Model.Field;
+
 import java.util.Random;
 
 /**
@@ -18,13 +23,13 @@ public class Game {
     };
 
     public static void main(String[] args) {
-        System.out.println("Game start\nEnter your name:");
+        System.out.println("View.Game start\nEnter your name:");
         String yourName = yourPlayer.inputTheName();
         System.out.printf("Hello, %s!\n", yourName);
         showEmptyField();
         messageAboutPlayer = messages[randomMessage.nextInt(messages.length)];
         System.out.println(messageAboutPlayer);
-        System.out.println("Game over");
+        System.out.println("View.Game over");
     }
 
     public static void showEmptyField() {
