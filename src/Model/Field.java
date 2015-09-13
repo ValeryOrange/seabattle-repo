@@ -12,6 +12,32 @@ public class Field {
     static int rowNumber;
 
     public void initField(){
+        for(int i = 0; i < FIELDWIDTH; i ++){
+            for (int k = 0; k < FIELDHEIGHT; k ++){
+                cells[i][k] = '\u25a2';
+            }
+        }
+    }
+
+    public void showEmptyField(){
+        for (int k = 0; k < letters.length; k++) {
+            System.out.print(letters[k] + "\t");
+        }
+        System.out.println();
+        for (int i = 0; i < FIELDWIDTH; i++) {
+            rowNumber = i + 1;
+            System.out.print(rowNumber + "\t");
+            for (int j = 0; j < FIELDHEIGHT; j++) {
+                boxesWithoutShips[i][j] = '\u25a2';
+                System.out.print(cells[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+
+
+
+    public void showField(){
         for (int k = 0; k < letters.length; k++) {
             System.out.print(letters[k] + "\t");
         }
@@ -20,40 +46,16 @@ public class Field {
             rowNumber = i + 1;
             System.out.print(rowNumber + "\t");
             for (int j = 0; j < cells.length; j++) {
-                cells[i][j] = '\u25a2';
                 System.out.print(cells[i][j] + "\t");
             }
             System.out.println();
         }
-    }
-
-    public void initBoxesWithoutShips(){
-        for (int k = 0; k < letters.length; k++) {
-            System.out.print(letters[k] + "\t");
-        }
-        System.out.println();
-        for (int i = 0; i < boxesWithoutShips.length; i++) {
-            rowNumber = i + 1;
-            System.out.print(rowNumber + "\t");
-            for (int j = 0; j < boxesWithoutShips.length; j++) {
-                cells[i][j] = '\u25a2';
-                System.out.print(cells[i][j] + "\t");
-            }
-            System.out.println();
-        }
-    }
-
-    public void setShip(){
-         //алгоритм установки кораблей
     }
 
     public void doShoot(){
         // алгоритм стрельбы игрока
     }
 
-    public void showField(){
-        // алгоритм вывода в консоль текущего положения поля
-    }
 
     public void showFieldWithoutShips(){
         // алгоритм вывода в консоль текущего положения поля с отображением выстрелов и найденных кораблей

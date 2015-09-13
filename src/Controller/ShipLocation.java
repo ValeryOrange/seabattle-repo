@@ -10,14 +10,15 @@ import java.util.Random;
  * Created by Sony on 30.06.2015.
  */
 public class ShipLocation {
-    Field newField = new Field();
-    Ship newShip = new Ship();
-    Random randomCoordinate = new Random();
-    int horFirstCoordinate;
-    int verFirstCoordinate;
-    String[] orientations = new String[]{"horizontal", "vertical"};
-    String shipOrientation;
-    boolean isValidShipCell;
+    static Field newField = new Field();
+    static Ship newShip = new Ship();
+    static Random randomCoordinate = new Random();
+    public static int horFirstCoordinate;
+    public static int verFirstCoordinate;
+    static String[] orientations = new String[]{"horizontal", "vertical"};
+    static String shipOrientation;
+    public static boolean isValidShipLocation;
+    public static boolean isVertical;
 
     //TODO По моей текущей задумке корабли устанавливаются рандомно в любое место на двумерном поле
     // todo горизонтально или вертикално.
@@ -25,8 +26,9 @@ public class ShipLocation {
     //todo если корабль подбит, помечать ячейку квадратом с крестом
     //если у корабля горизонтальное расположение, то координата первой ячейки по горизонтали подбирается так,
     // чтобы горизонтальная координата + длина корабля не выходили за пределы поля
-    public int setFirstHorCoordinate() {
-        if (!isVertical()) {
+     //todo - везде, где вызывается isvertical - не метод вызывать, а передать его значение переменной.
+    public static int setFirstHorCoordinate() {
+        if (isVertical) {
             do {
                 horFirstCoordinate = randomCoordinate.nextInt(newField.FIELDWIDTH);
             } while ((horFirstCoordinate + newShip.length - 1) < newField.FIELDWIDTH);
@@ -39,8 +41,8 @@ public class ShipLocation {
 
     // если у корабля вертикальное расположение, то координата первой ячейки по вертикали подбирается так,
     //чтобы вертикальная координата + длина корабля не выходили за пределы поля
-    public int setFirstVerCoordinate() {
-        if (isVertical()) {
+    public static int setFirstVerCoordinate() {
+        if (isVertical) {
             do {
                 verFirstCoordinate = randomCoordinate.nextInt(newField.FIELDHEIGHT);
             } while ((verFirstCoordinate + newShip.length - 1) < newField.FIELDHEIGHT);
@@ -52,38 +54,38 @@ public class ShipLocation {
     }
 
     //метод случайного выбора горизонтального или вертикального расположения
-    public boolean isVertical() {
+    public static boolean defineOrientation() {
         shipOrientation = orientations[randomCoordinate.nextInt(orientations.length)];
-        if (shipOrientation == "vertical") {
-            return true;
+        if (shipOrientation.equals("vertical")) {
+            return isValidShipLocation = true;
         } else {
-            return false;
+            return isValidShipLocation = false;
         }
     }
 
     //проверка на то, чтобы рядом с каждой ячейкой корабля не было других кораблей
-    public boolean isNotShipNear() {
-        isValidShipCell = true;
+    public static boolean isNotShipNear(Ship newShip, Field newField) {
+        isValidShipLocation = true;
 //        if (isVertical()) {
         //проверка на то, чтобы в первой ячейке не был установлен корабль ранее
         if (newField.cells[horFirstCoordinate][verFirstCoordinate] == '\u2bc0') {
-            isValidShipCell = false;
+            isValidShipLocation = false;
         } else if (horFirstCoordinate == 0 && verFirstCoordinate == 0) {
             // проверка ячеек вокруг ячейки (0;0)
             if (newField.cells[horFirstCoordinate + 1][verFirstCoordinate] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate + 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate][verFirstCoordinate + 1] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если вокруг ячейки (0;0) нет кораблей и корабль однопалубный, то проверка закончена
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если вокруг ячейки (0;0) нет кораблей и корабль многопалубный, то проверяются ячейки вокруг
                 // других палуб корабля с учетом уже проверенных ячеек
             } else {
                 for (int m = 1; m < newShip.length; m++) {
                     if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                     }
                 }
             }
@@ -95,21 +97,21 @@ public class ShipLocation {
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate + 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate][verFirstCoordinate + 1] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если вокруг первой ячейки нет кораблей и корабль однопалубный, то проверка окончена
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если вокруг первой ячейки нет кораблей, корабль многопалубный и координаты последней
                 // ячейки (0;9), то проверяются ячейки вокруг других палуб корабля с выделенной проверкой на
                 // то, является ли наш корабль двухпалубным
             } else if (verFirstCoordinate + newShip.length == newField.FIELDHEIGHT) {
                 if (newShip.length == 2) {
-                    return isValidShipCell = true;
+                    return isValidShipLocation = true;
                 } else {
                     for (int m = 1; m < newShip.length - 1; m++) {
                         if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                 newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                            isValidShipCell = false;
+                            isValidShipLocation = false;
                         }
                     }
                 }
@@ -119,7 +121,7 @@ public class ShipLocation {
                 for (int m = 1; m < newShip.length; m++) {
                     if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                     }
                 }
             }
@@ -128,13 +130,13 @@ public class ShipLocation {
             if (newField.cells[horFirstCoordinate][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если корабль однопалубный, то корабль можно устанавливать
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если корабль многопалубный, то таким образом установить корабль нельзя
             } else {
-                isValidShipCell = false;
+                isValidShipLocation = false;
             }
         } else if (horFirstCoordinate > 0 && horFirstCoordinate < (newField.FIELDWIDTH - 1) &&
                 verFirstCoordinate == 0) {
@@ -144,17 +146,17 @@ public class ShipLocation {
                     newField.cells[horFirstCoordinate][verFirstCoordinate + 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если корабль однопалубный, то корабль можно устанавливать
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если корабль многопалубный, то проверяются ячейки вокруг других палуб общим способом
             } else {
                 for (int m = 1; m < newShip.length; m++) {
                     if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                     }
                 }
             }
@@ -163,16 +165,16 @@ public class ShipLocation {
             if (newField.cells[horFirstCoordinate][verFirstCoordinate + 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate + 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если корабль однопалубный, то корабль можно устанавливать
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если корабль многопалубный, то проверяются ячейки вокруг других палуб общим способом
             } else {
                 for (int m = 1; m < newShip.length; m++) {
                     if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                     }
                 }
             }
@@ -184,21 +186,21 @@ public class ShipLocation {
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate][verFirstCoordinate - 1] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если вокруг первой ячейки нет кораблей и корабль однопалубный, то проверка окончена
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если вокруг первой ячейки нет кораблей, корабль многопалубный и координаты последней
                 // ячейки (9;9), то проверяются ячейки вокруг других палуб корабля с выделенной проверкой на
                 // то, является ли наш корабль двухпалубным
             } else if (verFirstCoordinate + newShip.length == newField.FIELDHEIGHT) {
                 if (newShip.length == 2) {
-                    return isValidShipCell = true;
+                    return isValidShipLocation = true;
                 } else {
                     for (int m = 1; m < newShip.length - 1; m++) {
                         if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                 newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                            isValidShipCell = false;
+                            isValidShipLocation = false;
                         }
                     }
                 }
@@ -208,7 +210,7 @@ public class ShipLocation {
                 for (int m = 1; m < newShip.length; m++) {
                     if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                             newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                     }
                 }
             }
@@ -218,13 +220,13 @@ public class ShipLocation {
             if (newField.cells[horFirstCoordinate - 1][verFirstCoordinate] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate][verFirstCoordinate - 1] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если корабль однопалубный, то его можно ставить. проверка окончена
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
             } else {
                 // если корабль многопалубный, то такого корабля не может быть.
-                isValidShipCell = false;
+                isValidShipLocation = false;
             }
         } else if (horFirstCoordinate > 0 && horFirstCoordinate < (newField.FIELDWIDTH - 1)
                 && verFirstCoordinate == (newField.FIELDHEIGHT - 1)) {
@@ -234,35 +236,35 @@ public class ShipLocation {
                     newField.cells[horFirstCoordinate][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate - 1] == '\u2bc0' ||
                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate] == '\u2bc0') {
-                isValidShipCell = false;
+                isValidShipLocation = false;
                 // если корабль однопалубный, то корабль можно устанавливать
             } else if (newShip.length == 1) {
-                isValidShipCell = true;
+                isValidShipLocation = true;
                 // если корабль многопалубный, то такого корабля не может быть
             } else {
-                isValidShipCell = false;
+                isValidShipLocation = false;
             }
         } else {
             // проверка общего случая на наличие кораблей вокруг первой ячейки
             for (int i = -1; i < 2; i++) {
                 for (int k = -1; k < 2; k++) {
                     if (newField.cells[horFirstCoordinate + i][verFirstCoordinate + k] == '\u2bc0') {
-                        isValidShipCell = false;
+                        isValidShipLocation = false;
                         // если корабль однопалубный, то корабль можно устанавливать
                     } else if (newShip.length == 1) {
-                        isValidShipCell = true;
+                        isValidShipLocation = true;
                         // если вокруг первой ячейки нет кораблей, корабль многопалубный и координаты последней
                         // ячейки (n;9), то проверяются ячейки вокруг других палуб корабля с выделенной проверкой на
                         // то, является ли наш корабль двухпалубным
                     } else if (verFirstCoordinate + newShip.length == newField.FIELDHEIGHT) {
                         if (newShip.length == 2) {
-                            return isValidShipCell = true;
+                            return isValidShipLocation = true;
                         } else {
                             for (int m = 1; m < newShip.length - 1; m++) {
                                 if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                         newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                         newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                                    isValidShipCell = false;
+                                    isValidShipLocation = false;
                                 }
                             }
                         }
@@ -273,7 +275,7 @@ public class ShipLocation {
                             if (newField.cells[horFirstCoordinate][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                     newField.cells[horFirstCoordinate - 1][verFirstCoordinate + m + 1] == '\u2bc0' ||
                                     newField.cells[horFirstCoordinate + 1][verFirstCoordinate + m + 1] == '\u2bc0') {
-                                isValidShipCell = false;
+                                isValidShipLocation = false;
                             }
                         }
                     }
@@ -285,7 +287,7 @@ public class ShipLocation {
 //        }else{
         // аналогичная проверка для горизонтальной ориентации
 //    }
-        return isValidShipCell;
+        return isValidShipLocation;
     }
 }
 
