@@ -10,8 +10,6 @@ import java.util.Random;
  */
 public class Game {
     static Field yourField = new Field();
-    static char[] letters = {' ', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
-    static int rowNumber;
     static Player yourPlayer = new Player();
     static String messageAboutPlayer;
     static Random randomMessage = new Random();
@@ -26,25 +24,10 @@ public class Game {
         System.out.println("View.Game start\nEnter your name:");
         String yourName = yourPlayer.inputTheName();
         System.out.printf("Hello, %s!\n", yourName);
-        showEmptyField();
+        yourField.initField();
         messageAboutPlayer = messages[randomMessage.nextInt(messages.length)];
         System.out.println(messageAboutPlayer);
         System.out.println("View.Game over");
     }
 
-    public static void showEmptyField() {
-        for (int k = 0; k < letters.length; k++){
-            System.out.print(letters[k] + "\t");
-        }
-        System.out.println();
-        for (int i = 0; i < yourField.cells.length; i++) {
-            rowNumber = i+1;
-            System.out.print(rowNumber + "\t");
-            for (int j = 0; j < yourField.cells.length; j++) {
-                yourField.cells[i][j] = '\u25a2';
-                System.out.print(yourField.cells[i][j] + "\t");
-            }
-            System.out.println();
-        }
-    }
 }
